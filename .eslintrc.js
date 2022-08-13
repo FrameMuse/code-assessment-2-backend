@@ -33,7 +33,7 @@ module.exports = {
       2,
       {
         "SwitchCase": 1,
-
+        "ignoredNodes": ["PropertyDefinition"]
       }
     ],
     "quotes": [
@@ -44,7 +44,7 @@ module.exports = {
       }
     ],
     // OFF
-    "prettier/prettier": ["error", { semi: false }],
+    "prettier/prettier": ["error", { semi: false, trailingComma: "none", printWidth: 100 }],
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
