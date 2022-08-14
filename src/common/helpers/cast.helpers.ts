@@ -1,25 +1,28 @@
-interface ToNumberOptions {
+export interface ToNumberOptions {
   default?: number
   min?: number
   max?: number
+  fixed?: number
 }
 
-export function toNumber(value: string, opts: ToNumberOptions = {}): number {
-  let newValue: number = Number.parseInt(value || String(opts.default), 10)
+export function toNumber(value: string, options: ToNumberOptions = {}): number {
+  let valueNumber = Number(value || options.default)
 
-  if (Number.isNaN(newValue)) {
-    newValue = opts.default
+  if (Number.isNaN(valueNumber) || valueNumber === Infinity) {
+    valueNumber = options.default ?? options.min
   }
 
-  if (opts.min) {
-    if (newValue < opts.min) {
-      newValue = opts.min
-    }
-
-    if (newValue > opts.max) {
-      newValue = opts.max
-    }
+  if (valueNumber < options.min) {
+    valueNumber = options.min
   }
 
-  return newValue
+  if (valueNumber > options.max) {
+    valueNumber = options.max
+  }
+
+  if (options.fixed) {
+    return Number(valueNumber.toFixed(options.fixed))
+  }
+
+  return valueNumber
 }

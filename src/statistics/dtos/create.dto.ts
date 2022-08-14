@@ -10,16 +10,16 @@ export class CreateInput {
 
   @IsNumber()
   @IsOptional()
-  @Transform(transformNumber({ default: 0 }))
+  @Transform(transformNumber({ min: 0 }))
   views: number
 
   @IsNumber()
   @IsOptional()
-  @Transform(transformNumber({ default: 0 }))
+  @Transform(transformNumber({ min: 0 }))
   clicks: number
 
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsNumber()
   @IsOptional()
-  @Transform(transformNumber({ default: 0 }))
+  @Transform(transformNumber({ default: 0, fixed: 2 }))
   cost: number
 }

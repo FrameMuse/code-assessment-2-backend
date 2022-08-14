@@ -34,8 +34,8 @@ class StatisticsEntity {
   /**
    * cost of clicks
    */
-  @Column({ default: 0 })
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @Column({ default: 0, type: "float" })
+  @IsNumber()
   cost: number
   /**
    * cost / clicks(average cost per click)

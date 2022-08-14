@@ -25,12 +25,12 @@ export class StatisticsController {
   }
 
   @Post()
-  create(@Body() createInput: CreateInput) {
-    return this.statisticsService.create(createInput)
+  async create(@Body() createInput: CreateInput) {
+    await this.statisticsService.create(createInput)
   }
 
   @Delete()
-  delete() {
-    return this.statisticsService.clear()
+  async reset() {
+    await this.statisticsService.clear()
   }
 }

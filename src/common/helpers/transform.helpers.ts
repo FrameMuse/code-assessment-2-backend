@@ -1,16 +1,10 @@
 import { BadRequestException } from "@nestjs/common"
 import { TransformationType, TransformFnParams } from "class-transformer"
 
-import { toNumber } from "./cast.helpers"
-
-interface TransformNumberOptions {
-  default?: number
-  min?: number
-  max?: number
-}
+import { toNumber, ToNumberOptions } from "./cast.helpers"
 
 export function transformNumber(
-  options: TransformNumberOptions = {}
+  options: ToNumberOptions = {}
 ): (params: TransformFnParams) => number {
   return ({ value }) => toNumber(value, options)
 }

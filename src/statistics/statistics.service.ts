@@ -21,23 +21,23 @@ export class StatisticsService {
     }
 
     return entries.filter((entry) => {
-      if (entry.date.getTime() >= filters.from?.getTime()) {
-        return true
+      if (entry.date.getTime() < filters.from?.getTime()) {
+        return false
       }
 
-      if (entry.date.getTime() <= filters.to?.getTime()) {
-        return true
+      if (entry.date.getTime() > filters.to?.getTime()) {
+        return false
       }
 
-      return false
+      return true
     })
   }
 
-  create(createInput: CreateInput): void {
-    this.repository.save(createInput)
+  async create(createInput: CreateInput): Promise<CreateInput & StatisticsFiltersDto> {
+    return await this.repository.save(createInput)
   }
 
-  clear(): void {
-    this.repository.clear()
+  async clear(): Promise<void> {
+    await this.repository.clear()
   }
 }
