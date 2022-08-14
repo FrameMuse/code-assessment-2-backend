@@ -1,18 +1,22 @@
 import { Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
 
 import { CreateInput } from "./dtos/create.dto"
 import StatisticsFiltersDto from "./dtos/filters.dto"
 import StatisticsEntity from "./entities/statistics.entity"
-import { StatisticsRepository } from "./entities/statistics.repository"
 
 @Injectable()
 export class StatisticsService {
-  constructor(private podcastRepository: StatisticsRepository) {}
+  constructor(
+    @InjectRepository(StatisticsEntity)
+    private readonly repository: Repository<StatisticsEntity>
+  ) {}
 
-  findAll(filters?: StatisticsFiltersDto): StatisticsEntity[] {
-    const entries = this.podcastRepository.getAll()
+  async findAll(filters: StatisticsFiltersDto): Promise<StatisticsEntity[]> {
+    const entries = await this.repository.find()
 
-    if (filters == null) {
+    if (filters.from == null && filters.to == null) {
       return entries
     }
 
@@ -29,17 +33,11 @@ export class StatisticsService {
     })
   }
 
-  create(createInput: CreateInput): { id: string } {
-    const podcast = this.podcastRepository.create(createInput)
-    return { id: podcast.id }
+  create(createInput: CreateInput): void {
+    this.repository.save(createInput)
   }
 
-  reset(): boolean {
-    try {
-      this.podcastRepository.deleteMany(this.podcastRepository.records.map((record) => record.id))
-      return true
-    } catch {
-      return false
-    }
+  clear(): void {
+    this.repository.clear()
   }
 }

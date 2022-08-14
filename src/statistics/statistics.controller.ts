@@ -10,8 +10,8 @@ export class StatisticsController {
   constructor(private statisticsService: StatisticsService) {}
 
   @Get()
-  get(@Query() filters?: StatisticsFiltersDto): StatisticsEntity[] {
-    return this.statisticsService.findAll(filters)
+  async get(@Query() filters: StatisticsFiltersDto): Promise<StatisticsEntity[]> {
+    return await this.statisticsService.findAll(filters)
   }
 
   @Post()
@@ -21,6 +21,6 @@ export class StatisticsController {
 
   @Delete()
   delete() {
-    return this.statisticsService.reset()
+    return this.statisticsService.clear()
   }
 }
