@@ -17,8 +17,10 @@ export function transformNumber(
 
 export function transformDate({ type, value }: TransformFnParams): Date | string {
   switch (type) {
-    case TransformationType.CLASS_TO_PLAIN:
-      return (value as Date).toLocaleString("en", { dateStyle: "short" })
+    case TransformationType.CLASS_TO_PLAIN: {
+      const valueDate = value as Date
+      return valueDate.toJSON().slice(0, 10) // YYYY-MM-DD without time
+    }
 
     case TransformationType.PLAIN_TO_CLASS:
       if (/^\d{4}-\d{2}-\d{2}$/m.test(value) === false) {

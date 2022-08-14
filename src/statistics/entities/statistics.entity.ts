@@ -13,7 +13,7 @@ class StatisticsEntity {
    * event date in YYYY-MM-DD format.
    *
    * @example
-   * "2022.08.04"
+   * "2022-08-04"
    */
   @Column()
   @IsDate()
@@ -24,26 +24,25 @@ class StatisticsEntity {
    */
   @Column({ default: 0 })
   @IsNumber()
-  @Transform(transformNumber({ default: 0 }))
   views: number
   /**
    * number of clicks
    */
   @Column({ default: 0 })
   @IsNumber()
-  @Transform(transformNumber({ default: 0 }))
   clicks: number
   /**
    * cost of clicks
    */
   @Column({ default: 0 })
   @IsNumber({ maxDecimalPlaces: 2 })
-  @Transform(transformNumber({ default: 0 }))
   cost: number
   /**
    * cost / clicks(average cost per click)
    */
   @Expose()
+  @IsNumber()
+  @Transform(transformNumber({ default: 0 }))
   get cpc(): number {
     return this.cost / this.clicks
   }
@@ -51,8 +50,14 @@ class StatisticsEntity {
    * cost / views * 1000 (average cost per 1000 impressions)
    */
   @Expose()
+  @IsNumber()
+  @Transform(transformNumber({ default: 0 }))
   get cpm(): number {
     return (this.cost / this.views) * 1000
+  }
+
+  constructor(partial: Partial<StatisticsEntity>) {
+    Object.assign(this, partial)
   }
 }
 

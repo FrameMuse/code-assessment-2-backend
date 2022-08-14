@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common"
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseInterceptors
+} from "@nestjs/common"
 
 import { CreateInput } from "./dtos/create.dto"
 import StatisticsFiltersDto from "./dtos/filters.dto"
@@ -9,6 +18,7 @@ import { StatisticsService } from "./statistics.service"
 export class StatisticsController {
   constructor(private statisticsService: StatisticsService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   async get(@Query() filters: StatisticsFiltersDto): Promise<StatisticsEntity[]> {
     return await this.statisticsService.findAll(filters)

@@ -11,7 +11,7 @@ import { StatisticsModule } from "./statistics/statistics.module"
     TypeOrmModule.forRoot({
       type: "mysql",
       host: "localhost",
-      port: 3306,
+      port: 33060,
       username: "root",
       password: "root",
       database: "test",

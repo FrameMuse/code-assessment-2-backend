@@ -1,3 +1,5 @@
+# Source: https://www.tomray.dev/nestjs-docker-compose-postgres
+
 ###################
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
