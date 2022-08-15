@@ -8,8 +8,10 @@ import {
   Query,
   UseInterceptors
 } from "@nestjs/common"
+import { ApiOkResponse } from "@nestjs/swagger"
 
-import { CreateInput } from "./dtos/create.dto"
+import { CreateStatisticsEntry } from "./dtos/create.dto"
+import StatisticsEntries from "./dtos/entries.dto"
 import StatisticsFiltersDto from "./dtos/filters.dto"
 import StatisticsEntity from "./entities/statistics.entity"
 import { StatisticsService } from "./statistics.service"
@@ -19,6 +21,10 @@ export class StatisticsController {
   constructor(private statisticsService: StatisticsService) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOkResponse({
+    description: "The user records",
+    type: StatisticsEntries
+  })
   @Get()
   async get(@Query() filters: StatisticsFiltersDto): Promise<{ entries: StatisticsEntity[] }> {
     return {
@@ -27,7 +33,7 @@ export class StatisticsController {
   }
 
   @Post()
-  async create(@Body() createInput: CreateInput) {
+  async create(@Body() createInput: CreateStatisticsEntry) {
     await this.statisticsService.create(createInput)
   }
 

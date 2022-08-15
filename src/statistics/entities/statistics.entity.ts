@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger"
 import { Exclude, Expose, Transform } from "class-transformer"
 import { IsDate, IsNumber } from "class-validator"
 import { transformDate, transformNumber } from "src/common/helpers/transform.helpers"
@@ -16,6 +17,7 @@ class StatisticsEntity {
    * "2022-08-04"
    */
   @Column()
+  @ApiProperty({ example: "2002-20-12" })
   @IsDate()
   @Transform(transformDate)
   date: Date
@@ -23,23 +25,27 @@ class StatisticsEntity {
    * number of impressions
    */
   @Column({ default: 0 })
+  @ApiProperty()
   @IsNumber()
   views: number
   /**
    * number of clicks
    */
   @Column({ default: 0 })
+  @ApiProperty()
   @IsNumber()
   clicks: number
   /**
    * cost of clicks
    */
   @Column({ default: 0, type: "float" })
+  @ApiProperty()
   @IsNumber()
   cost: number
   /**
    * cost / clicks(average cost per click)
    */
+  @ApiProperty()
   @Expose()
   @IsNumber()
   @Transform(transformNumber({ default: 0 }))
@@ -49,6 +55,7 @@ class StatisticsEntity {
   /**
    * cost / views * 1000 (average cost per 1000 impressions)
    */
+  @ApiProperty()
   @Expose()
   @IsNumber()
   @Transform(transformNumber({ default: 0 }))

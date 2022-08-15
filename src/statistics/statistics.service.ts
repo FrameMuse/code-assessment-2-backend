@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
-import { CreateInput } from "./dtos/create.dto"
+import { CreateStatisticsEntry } from "./dtos/create.dto"
 import StatisticsFiltersDto from "./dtos/filters.dto"
 import StatisticsEntity from "./entities/statistics.entity"
 
@@ -33,7 +33,9 @@ export class StatisticsService {
     })
   }
 
-  async create(createInput: CreateInput): Promise<CreateInput & StatisticsFiltersDto> {
+  async create(
+    createInput: CreateStatisticsEntry
+  ): Promise<CreateStatisticsEntry & StatisticsFiltersDto> {
     return await this.repository.save(createInput)
   }
 
