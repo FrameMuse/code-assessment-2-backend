@@ -25,6 +25,8 @@ $ npm run start:prod
 
 ## Test
 
+Before test, don't forget to start DB (e.g. using `docker-compose up`).
+
 ```bash
 # unit tests
 $ npm run test

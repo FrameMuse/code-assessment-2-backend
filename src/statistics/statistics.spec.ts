@@ -51,7 +51,7 @@ describe("StatisticsController", () => {
     }
 
     it(`GET /statistics should return empty array`, () => {
-      return request(app.getHttpServer()).get("/statistics").expect(200).expect([])
+      return request(app.getHttpServer()).get("/statistics").expect(200).expect({ entries: [] })
     })
 
     it(`GET /statistics should filter by "from" or "to" (inclusive) with past date`, async () => {
@@ -61,13 +61,13 @@ describe("StatisticsController", () => {
         .get("/statistics")
         .query({ from: "2002-10-20" })
       expect(responseFROM.status).toBe(200)
-      expect(responseFROM.body).toEqual([testEntity])
+      expect(responseFROM.body).toEqual({ entries: [testEntity] })
 
       const responseTO = await request(app.getHttpServer())
         .get("/statistics")
         .query({ to: "2002-10-20" })
       expect(responseTO.status).toBe(200)
-      expect(responseTO.body).toEqual([])
+      expect(responseTO.body).toEqual({ entries: [] })
     })
 
     it(`GET /statistics should filter by "from" or "to" (inclusive) with the same date`, async () => {
@@ -77,13 +77,13 @@ describe("StatisticsController", () => {
         .get("/statistics")
         .query({ from: "2002-12-20" })
       expect(responseFROM.status).toBe(200)
-      expect(responseFROM.body).toEqual([testEntity])
+      expect(responseFROM.body).toEqual({ entries: [testEntity] })
 
       const responseTO = await request(app.getHttpServer())
         .get("/statistics")
         .query({ to: "2002-12-20" })
       expect(responseTO.status).toBe(200)
-      expect(responseTO.body).toEqual([testEntity])
+      expect(responseTO.body).toEqual({ entries: [testEntity] })
     })
 
     it(`GET /statistics should filter by "from" or "to" (inclusive) with future date`, async () => {
@@ -93,13 +93,13 @@ describe("StatisticsController", () => {
         .get("/statistics")
         .query({ from: "2012-12-20" })
       expect(responseFROM.status).toBe(200)
-      expect(responseFROM.body).toEqual([])
+      expect(responseFROM.body).toEqual({ entries: [] })
 
       const responseTO = await request(app.getHttpServer())
         .get("/statistics")
         .query({ to: "2012-12-20" })
       expect(responseTO.status).toBe(200)
-      expect(responseTO.body).toEqual([testEntity])
+      expect(responseTO.body).toEqual({ entries: [testEntity] })
     })
 
     it(`GET /statistics should filter by "from" and "to" (inclusive) with past date`, async () => {
@@ -109,7 +109,7 @@ describe("StatisticsController", () => {
         .get("/statistics")
         .query({ to: "2001-12-20", from: "2001-12-20" })
         .expect(200)
-        .expect([])
+        .expect({ entries: [] })
     })
 
     it(`GET /statistics should filter by "from" and "to" (inclusive) with the same date`, async () => {
@@ -119,7 +119,7 @@ describe("StatisticsController", () => {
         .get("/statistics")
         .query({ to: "2002-12-20", from: "2002-12-20" })
         .expect(200)
-        .expect([testEntity])
+        .expect({ entries: [testEntity] })
     })
 
     it(`GET /statistics should filter by "from" and "to" (inclusive) with future date`, async () => {
@@ -129,7 +129,7 @@ describe("StatisticsController", () => {
         .get("/statistics")
         .query({ to: "2012-12-20", from: "2012-12-20" })
         .expect(200)
-        .expect([])
+        .expect({ entries: [] })
     })
 
     it(`GET /statistics should filter by "from" and "to" (inclusive)`, async () => {
@@ -139,7 +139,7 @@ describe("StatisticsController", () => {
         .get("/statistics")
         .query({ to: "2012-12-20", from: "2000-12-20" })
         .expect(200)
-        .expect([testEntity])
+        .expect({ entries: [testEntity] })
     })
 
     it(`GET /statistics should filter by "from" and "to" with wrong dates format`, async () => {
@@ -159,11 +159,13 @@ describe("StatisticsController", () => {
     })
 
     it(`POST /statistics should create new record"`, async () => {
-      return request(app.getHttpServer())
-        .post("/statistics")
-        .send(testCreateInput)
-        .expect(201)
-        .expect("")
+      const response1 = await createEntity()
+      expect(response1.status).toBe(201)
+      expect(response1.body).toEqual({})
+
+      const response2 = await request(app.getHttpServer()).get("/statistics")
+      expect(response2.status).toBe(200)
+      expect(response2.body).toEqual({ entries: [testEntity] })
     })
 
     it(`DELETE /statistics should return void"`, async () => {
@@ -175,13 +177,13 @@ describe("StatisticsController", () => {
 
       const getResponse1 = await request(app.getHttpServer()).get("/statistics")
       expect(getResponse1.status).toBe(200)
-      expect(getResponse1.body).toEqual([testEntity])
+      expect(getResponse1.body).toEqual({ entries: [testEntity] })
 
       await request(app.getHttpServer()).delete("/statistics")
 
       const getResponse2 = await request(app.getHttpServer()).get("/statistics")
       expect(getResponse2.status).toBe(200)
-      expect(getResponse2.body).toEqual([])
+      expect(getResponse2.body).toEqual({ entries: [] })
     })
   })
 

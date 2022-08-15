@@ -20,8 +20,10 @@ export class StatisticsController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async get(@Query() filters: StatisticsFiltersDto): Promise<StatisticsEntity[]> {
-    return await this.statisticsService.findAll(filters)
+  async get(@Query() filters: StatisticsFiltersDto): Promise<{ entries: StatisticsEntity[] }> {
+    return {
+      entries: await this.statisticsService.findAll(filters)
+    }
   }
 
   @Post()
