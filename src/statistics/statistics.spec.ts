@@ -40,6 +40,11 @@ describe("StatisticsController", () => {
       cpc: 0,
       cpm: 2200
     }
+    const test400ErrorResponse = {
+      error: "Bad Request",
+      message: "Validation failed: Wrong date format, the accepted is YYYY-MM-DD.",
+      statusCode: 400
+    }
 
     function createEntity() {
       return request(app.getHttpServer()).post("/statistics").send(testCreateInput)
@@ -135,6 +140,22 @@ describe("StatisticsController", () => {
         .query({ to: "2012-12-20", from: "2000-12-20" })
         .expect(200)
         .expect([testEntity])
+    })
+
+    it(`GET /statistics should filter by "from" and "to" with wrong dates format`, async () => {
+      await createEntity()
+
+      const responseFROM = await request(app.getHttpServer())
+        .get("/statistics")
+        .query({ from: "12-20-2002" })
+      expect(responseFROM.status).toBe(400)
+      expect(responseFROM.body).toEqual(test400ErrorResponse)
+
+      const responseTO = await request(app.getHttpServer())
+        .get("/statistics")
+        .query({ to: "12-20-2002" })
+      expect(responseTO.status).toBe(400)
+      expect(responseTO.body).toEqual(test400ErrorResponse)
     })
 
     it(`POST /statistics should create new record"`, async () => {

@@ -36,7 +36,25 @@ $ npm run test:cov
 
 ## Docker
 
-Has Docker configurations such as [`Dockerfile`](./Dockerfile) and [`docker-compose.yml`](./docker-compose.yml).
+There are configurations such as [`Dockerfile`](./Dockerfile) and [`docker-compose.yml`](./docker-compose.yml).
+
+To start MySQL DB
+
+```bash
+# To start DB service
+$ docker-compose up
+# To end DB service
+$ docker-compose down
+```
+
+To build and run API image for production
+
+```bash
+# Build image with production target
+$ docker build ./ --target production
+# Run image
+$ docker run [IMAGE]
+```
 
 ## Migrartions
 
