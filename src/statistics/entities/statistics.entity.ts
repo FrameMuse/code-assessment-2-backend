@@ -17,7 +17,7 @@ class StatisticsEntity {
    * "2022-08-04"
    */
   @Column()
-  @ApiProperty({ example: "2002-20-12" })
+  @ApiProperty({ format: "date" })
   @IsDate()
   @Transform(transformDate)
   date: Date

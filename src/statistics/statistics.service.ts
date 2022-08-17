@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
 import { CreateStatisticsEntry } from "./dtos/create.dto"
-import StatisticsFiltersDto from "./dtos/filters.dto"
+import StatisticsFilters from "./dtos/filters.dto"
 import StatisticsEntity from "./entities/statistics.entity"
 
 @Injectable()
@@ -13,7 +13,7 @@ export class StatisticsService {
     private readonly repository: Repository<StatisticsEntity>
   ) {}
 
-  async findAll(filters: StatisticsFiltersDto): Promise<StatisticsEntity[]> {
+  async findAll(filters: StatisticsFilters): Promise<StatisticsEntity[]> {
     const entries = await this.repository.find()
 
     if (filters.from == null && filters.to == null) {
@@ -35,7 +35,7 @@ export class StatisticsService {
 
   async create(
     createInput: CreateStatisticsEntry
-  ): Promise<CreateStatisticsEntry & StatisticsFiltersDto> {
+  ): Promise<CreateStatisticsEntry & StatisticsFilters> {
     return await this.repository.save(createInput)
   }
 

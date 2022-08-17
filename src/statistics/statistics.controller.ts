@@ -8,25 +8,26 @@ import {
   Query,
   UseInterceptors
 } from "@nestjs/common"
-import { ApiOkResponse } from "@nestjs/swagger"
+import { ApiOkResponse, ApiTags } from "@nestjs/swagger"
 
 import { CreateStatisticsEntry } from "./dtos/create.dto"
 import StatisticsEntries from "./dtos/entries.dto"
-import StatisticsFiltersDto from "./dtos/filters.dto"
+import StatisticsFilters from "./dtos/filters.dto"
 import StatisticsEntity from "./entities/statistics.entity"
 import { StatisticsService } from "./statistics.service"
 
+@ApiTags("statistics")
 @Controller("statistics")
 export class StatisticsController {
   constructor(private statisticsService: StatisticsService) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiOkResponse({
-    description: "The user records",
+    description: "Statistic entries",
     type: StatisticsEntries
   })
   @Get()
-  async get(@Query() filters: StatisticsFiltersDto): Promise<{ entries: StatisticsEntity[] }> {
+  async get(@Query() filters: StatisticsFilters): Promise<{ entries: StatisticsEntity[] }> {
     return {
       entries: await this.statisticsService.findAll(filters)
     }
